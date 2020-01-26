@@ -6,7 +6,7 @@ def find_route(block, timeTarget):
 		return fly(block, Route(), timeTarget)
 	else:
 		for sqr in block.neighbours:
-			find_route(sqr, Route(), timeTarget)
+			find_route(sqr, timeTarget)
 
 def fly(block, route, timeTarget):
 	t = (block.x, block.y, block.height)
@@ -27,14 +27,10 @@ def fly(block, route, timeTarget):
 	if(route.time > (timeTarget * 0.8)):
 		for b in block.neighbours:
 			if b.height < block.height:
-				if b.height == 0:
-					if validate_landing(b):
-						fly(b, route, timeTarget)
-				else:
+				if b.height == 0 and validate_landing(b):
 					fly(b, route, timeTarget)
-
 
 	if(len(block.neighbours) > 0):
 		fly(block.neighbours[0], route, timeTarget)
 
-	return None # we have not managed to land successfully so no route found!
+	return route # we have not managed to land successfully so no route found!
