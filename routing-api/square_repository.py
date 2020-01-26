@@ -1,7 +1,9 @@
 import xarray as xr
 from square import GridSquare
+from typing import List, Tuple
+from validators import validate_flight, validate_landing, validate_take_off
 
-def get_square_column(x, y) -> GridSquare:
+def get_square_column(x: int, y: int) -> List[GridSquare]:
 	squares = [GridSquare() for _ in range(10)]
 
 	with xr.open_dataset('wind_direction.nc') as direction_data:
@@ -44,3 +46,25 @@ def get_square_column(x, y) -> GridSquare:
 			squares[i].speed = speed
 	
 	return squares
+
+def get_surrounding_area(x: int, y: int) -> List[List[List[GridSquare]]]:
+	retval = []
+
+	for cx in range(x - 10000, x + 10000, 2000):
+		row = []
+		for cy in range(y - 10000, y + 10000, 2000):
+			row.append(get_square_column(cx, cy))
+		retval.append(row)
+	
+	return retval
+
+def get_landing_zones(cube: List[List[List[GridSquare]]]) -> List[Tuple[int, int]]:
+	retval = []
+
+	for row in cube:
+		for column in row:
+			if validate_landing(column[0]):
+				retval.append((column[0].x, column[0].y))
+	
+	return retval
+
