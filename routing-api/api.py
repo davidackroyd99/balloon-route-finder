@@ -13,8 +13,9 @@ app.json_encoder = BalloonJSONEncoder
 cors = CORS(app)
 
 def convert_lat_lng(lat, lng):
-	distance = stolen.distance(lat, lng, 54.9, -2.5) * 1000
-	bearing = stolen.calculate_initial_compass_bearing((lat, lng), (54.9, -2.5))
+	# distance = stolen.distance(lat, lng, 54.9, -2.5) * 1000
+	# bearing = stolen.calculate_initial_compass_bearing((lat, lng), (54.9, -2.5))
+	return (int(lat), int(lng))
 
 
 def get_lat_lng(dx, dy):
@@ -33,7 +34,7 @@ def index():
 	route = find_route(block, time)
 	if route is None:
 		return jsonify([])
-	route.directions = [[get_lat_lng(c[0], c[1]), c[2]] for c in route.directions]
+	route.directions = [[*get_lat_lng(c[0], c[1]), c[2]] for c in route.directions]
 	return jsonify(route)
 
 if __name__ == '__main__':
