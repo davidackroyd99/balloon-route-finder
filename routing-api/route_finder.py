@@ -1,28 +1,40 @@
-from validators import validate_take_off
+from validators import validate_take_off, validate_landing
+from route import Route
 
-def find_route(block):
+def find_route(block, timeTarget):
 	if(validate_take_off(block)):
-		return fly(block, [])
+		return fly(block, Route(), timeTarget)
 	else:
 		for sqr in block.neighbours:
-			find_route(sqr)
+			find_route(sqr, Route(), timeTarget)
 
-def fly(block, route):
+def fly(block, route, timeTarget):
 	t = (block.x, block.y, block.height)
-	if(t in route):
+	if(t in route.directions):
 		return route
 
-	route.append(t)
+	route.directions.append(t)
+	route.time += 2000 / (block.speed * 60)
 
-	if len(route) > 2 and block.height == 0:
+	if len(route.directions) > 2 and block.height == 0:
 		return route
 
 	if(block.height < 500):
 		for b in block.neighbours:
 			if b.height > block.height:
-				fly(b, route)
+				fly(b, route, timeTarget)
+
+	if(route.time > (timeTarget * 0.8)):
+		for b in block.neighbours:
+			if b.height < block.height:
+				if b.height == 0:
+					if validate_landing(b):
+						fly(b, route, timeTarget)
+				else:
+					fly(b, route, timeTarget)
+
 
 	if(len(block.neighbours) > 0):
-		fly(block.neighbours[0], route)
+		fly(block.neighbours[0], route, timeTarget)
 
-	return route
+	return None # we have not managed to land successfully so no route found!
