@@ -18,6 +18,7 @@ class GridSquare:
 		self.speed: float = 0.0
 		self.bearing: float = 0.0
 		self.time: date
+		self.neighbours = []
 
 	def get_direction(self) -> Direction:
 		if(self.bearing < 45):

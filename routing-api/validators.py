@@ -10,8 +10,11 @@ def validate(functions, square: GridSquare):
 def max_wind_speed(limit: float, square: GridSquare):
 	return square.speed < limit
 
-take_off = [partial(max_wind_speed, 6)]
-landing = [partial(max_wind_speed, 6)]
+def on_ground(square: GridSquare):
+	return square.height == 0
+
+take_off = [partial(max_wind_speed, 6), on_ground]
+landing = [partial(max_wind_speed, 6), on_ground]
 flight = [partial(max_wind_speed, 10)]
 
 validate_take_off = partial(validate, take_off)
