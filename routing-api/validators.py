@@ -13,8 +13,8 @@ def max_wind_speed(limit: float, square: GridSquare):
 def on_ground(square: GridSquare):
 	return square.height == 0
 
-take_off = [partial(max_wind_speed, 6), on_ground]
-landing = [partial(max_wind_speed, 6), on_ground]
+take_off = [partial(max_wind_speed, 8), on_ground]
+landing = [partial(max_wind_speed, 8), on_ground]
 flight = [partial(max_wind_speed, 20)]
 
 validate_take_off = partial(validate, take_off)

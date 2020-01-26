@@ -19,12 +19,12 @@ def fly(block, route, timeTarget):
 	if len(route.directions) > 2 and block.height == 0:
 		return route
 
-	if(block.height < 500):
+	if(block.height < 600):
 		for b in block.neighbours:
 			if b.height > block.height:
 				fly(b, route, timeTarget)
 
-	if(route.time > (timeTarget * 0.8)):
+	if(route.time > (timeTarget * 0.9)):
 		for b in block.neighbours:
 			if b.height < block.height:
 				if b.height == 0 and validate_landing(b):
