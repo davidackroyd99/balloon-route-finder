@@ -15,7 +15,7 @@ def on_ground(square: GridSquare):
 
 take_off = [partial(max_wind_speed, 6), on_ground]
 landing = [partial(max_wind_speed, 6), on_ground]
-flight = [partial(max_wind_speed, 10)]
+flight = [partial(max_wind_speed, 20)]
 
 validate_take_off = partial(validate, take_off)
 validate_landing = partial(validate, landing)
